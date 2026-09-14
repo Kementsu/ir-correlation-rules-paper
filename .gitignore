@@ -1,0 +1,20 @@
+# Raw spectra and archives are not redistributed from this repository.
+# See README.md, section "Data and licensing".
+data/raw/
+
+# Reference checkouts of third-party code (cloned, not vendored).
+tools/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
