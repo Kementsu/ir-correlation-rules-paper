@@ -53,6 +53,21 @@ python scripts/inventory.py
 writes `data/processed/inventory.csv` plus the human-readable summary
 `docs/inventory.md`. See `docs/DOWNLOAD.md` for how to obtain the archive.
 
+The full pipeline, in order:
+
+```sh
+python scripts/inventory.py                 # QC and ground truth per spectrum
+python scripts/preprocess.py                # absorbance, baseline, grid, dev/confirm split
+python scripts/bands.py                     # band detection (position, intensity, width)
+python scripts/evaluate_rules.py --split dev     # pipeline check on the development split
+python scripts/evaluate_rules.py --split confirm # confirmatory run, ONLY after the rules are frozen
+```
+
+`docs/pipeline_notes.md` records the fixed processing choices, the
+development/confirmatory split and what the pipeline check showed.
+`data/processed/spectra.npz` (84 MB) is not tracked; rebuild it with
+`preprocess.py`.
+
 ## Data and licensing
 
 ### Primary dataset

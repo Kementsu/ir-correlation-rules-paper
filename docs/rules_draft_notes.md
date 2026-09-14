@@ -3,123 +3,102 @@
 Companion to `rules/rules_draft.csv`. Nothing in that file is frozen: every row
 carries `frozen = no` and the table is a draft for human review.
 
-## 1. Provenance of what is in the table
+## 1. Provenance (updated 2026-09-14, second pass)
 
-**Read this first.** None of the 21 rows currently in `rules_draft.csv` was read
-by the transcriber from the published article. Every automated attempt to
-download the sources was refused (see section 2), so the rows transcribed are
-exactly the values the project lead supplied as already verified against the
-printed tables. They are recorded here with the citation the project lead gave.
+The Smith articles are free to read on spectroscopyonline.com; only their PDF
+export is blocked. In the second pass every Smith source below was read on the
+web page itself, and every numbered table was read from the published table
+image (the tables are served as PNG files on the publisher's CDN). So every row
+whose `table` column is filled was transcribed from the table as printed, and
+every row whose `table` column is empty was transcribed from a sentence of the
+article text; that sentence is copied in `source_quote`.
 
-The practical consequence: the `source_quote` column holds the numeric row as it
-was handed over, not a character-for-character copy of the published table cell.
-Before any row is frozen, it has to be checked against the article itself.
+Coates (Wiley) is still not obtained: the open copy on Wiley Analytical Science
+is behind a login or paywall from this side. See `docs/refs/PENDING.md`.
 
-## 2. Sources obtained and not obtained
+## 2. Sources and rows
 
-Attempted on 2026-09-14. Every URL returned **HTTP 403 Forbidden**, to a direct
-HTTP client and to the standard page fetcher alike. By instruction, no mirror,
-proxy or alternative route was tried.
+| Source (Smith, Spectroscopy) | Read | Rows |
+| --- | --- | --- |
+| The Big Review IV: Hydrocarbons, 2025, 40(1), 16-19 | Text + Tables I, III | 12 |
+| The Big Review V: The C-O Bond, 2025, 40(3), 10-13 | Text + Tables I, II | 11 |
+| The Big Review VI: Carbonyl Compounds, 2025, 40(4), 12-18 | Text + Tables I, II | 11 |
+| The Big Review VII: More Carbonyl Compounds, 2025, 40(8), 27-30 | Text (Tables I-III restated in text) | 13 |
+| The Big Review VIII: Organic Nitrogen Compounds, 2026, 41(1), 20-26 | Text + Tables 1-4 | 23 |
+| The C=O Bond, Part II: Aldehydes, 2017, 32(11), 31-36 | Text | 4 |
+| The Infrared Spectroscopy of Alkenes, 2016, 31(11) | Text (Table II restated in text) | 11 |
+| Potpourri: Carbohydrates and Alkynes, 2017, 32(7) | Text | 4 |
+| Organic Nitrogen Compounds IV: Nitriles, 2019, 34(7) | Text | 2 |
+| Organic Nitrogen Compounds X: Nitro Groups, 2020, 35(9) | Text | 3 |
+| Organic Nitrogen Compounds V: Amine Salts, 2019, 34(9) | Text | 7 |
+| Group Wavenumbers and an Introduction to the Spectroscopy of Benzene Rings, 2016, 31(3) | Text | 3 |
+| Coates, Encyclopedia of Analytical Chemistry, 2000 | Not obtained | 0 |
+| **Total** | | **104** |
 
-| Source | Obtained | Rules transcribed |
-| ------ | -------- | ----------------- |
-| Coates, *Encyclopedia of Analytical Chemistry*, Wiley 2000, DOI 10.1002/9780470027318.a5606 | No, 403 | 0 |
-| Smith, The Big Review IV: Hydrocarbons, *Spectroscopy* 2025, 40(1), 16-19 | No, 403 | 10 |
-| Smith, The Big Review V: The C-O Bond, *Spectroscopy* 2025, 40(3), 10-13 | No, 403 | 5 |
-| Smith, The Big Review VI: Carbonyl Compounds, *Spectroscopy* 2025, 40(4), 12-18 | No, 403 | 0 |
-| Smith, The Big Review VII: More Carbonyl Compounds, *Spectroscopy* 2025 | No, 403 | 6 |
-| Smith, The Big Review VIII: Organic Nitrogen Compounds, *Spectroscopy* 2026, 41(1), 20-26 | No, 403 | 0 |
-| **Total** | | **21** |
+Page numbers are blank where the web page does not print them (alkenes,
+alkynes, nitriles, nitro, amine salts, benzene rings). They must be added from
+the issue PDF or the DOI landing page before freezing.
 
-The rules that were transcribed despite the failed downloads are the ones the
-project lead had already verified by hand. `docs/refs/PENDING.md` lists the exact
-URLs and the file names to save them under.
+## 3. Discrepancies between sources
 
-## 3. Discrepancies between Coates and Smith
+Coates is still missing, so no Coates versus Smith comparison exists yet.
+Within Smith there is one internal point to settle:
 
-**None can be reported yet.** Detecting a discrepancy requires two sources
-stating a window for the same group, and Coates could not be obtained, so every
-row in the table comes from a single author. This section is the reason the
-table keeps one row per rule *and per source* rather than merging windows, and
-it is expected to be the most informative part of the document once Coates is
-available.
-
-The comparison to run first, once Coates is in hand, is the set of groups the
-current table already covers: methyl and methylene C-H stretch, benzene
-substitution pattern bands, ester C=O and C-O, and alcohol C-O by substitution
-degree.
+- Big Review V, Table I prints the alcohol "O-H Bends" cell as
+  "3350+-50, 650+-50". The text describes only one bend, the O-H wag at
+  650+-50, and 3350 is the O-H stretch. The 3350 entry in the bends column is
+  treated as a typesetting repeat and not transcribed as a bend
+  (`SMITH-BR5-ROH-OH-WAG`, condition_notes).
 
 ## 4. Rules with no ground-truth group
 
-Six rows carry a blank `truth_smarts_group`, needing five distinct groups that
-are not in `rules/functional_groups_smarts.csv`. They are itemised, with the
-nearest existing group and why it does not serve, in `rules/groups_missing.md`:
+61 of 104 rows carry a blank `truth_smarts_group`. The groups they need are
+listed in `rules/groups_missing.md`. The main families are: methylene;
+primary, secondary, tertiary alcohol and phenol; mixed and aryl ether; organic
+carbonate; primary and secondary amide; primary and secondary amine, each split
+saturated versus aromatic; alkene substitution patterns (vinyl, cis, trans,
+trisubstituted); terminal versus internal alkyne; amine salts (protonated
+amines); and the umbrella rules for any carbonyl, any C-O bond, and any N-H
+bond. No SMARTS was invented for any of them.
 
-- `SMITH-BR4-CH2-ASYM`, `SMITH-BR4-CH2-SYM` need `methylene`
-- `SMITH-BR5-ROH-PRIM-CO` needs `alcohol_primary`
-- `SMITH-BR5-ROH-SEC-CO` needs `alcohol_secondary`
-- `SMITH-BR5-ROH-TERT-CO` needs `alcohol_tertiary`
-- `SMITH-BR5-AROH-CO` needs `alcohol_aromatic`
+## 5. Transcription doubts to resolve before freezing
 
-No SMARTS was invented for any of them.
+1. `SMITH-BR4-BZ-META-690`: resolved. The +-10 tolerance sits in the column
+   header of Table III and therefore applies to every row.
+2. `SMITH-BR8-AMN2-AR-NH`: Table 4 gives only "~3400" for the aromatic
+   secondary amine N-H stretch, with no range. wn_min and wn_max are left
+   blank on purpose; a tolerance has to be chosen and justified, or the row
+   dropped.
+3. `SMITH-ALD17-CH-BEND`: the source says "around 1390"; the +-10 window is an
+   editorial choice, flagged in condition_notes.
+4. Negative conditions: the ortho and para rules require the ABSENCE of the
+   690 band. How absence is scored is an evaluation decision, not made here.
+5. `intensity = any` still carries two meanings (source silent, or source says
+   any). Split before freezing.
+6. Umbrella rules (`SMITH-BR6-CO-GENERAL`, `SMITH-BR5-CO-GENERAL`,
+   `SMITH-BR8-NH-ANY`) are stated by the author as pattern-recognition windows,
+   not as diagnostics for a single group. Decide whether they enter the
+   evaluation as rules, or only as context.
+7. Amine salt rules are the source of the "salt mimics alkyne or nitrile"
+   trap observed during ARGI development (`SMITH-SALT19-COMB`, 2000-2800).
+   They only make sense on the salt stratum of the dataset.
 
-Six further rows (`SMITH-BR7-EST-*`, `SMITH-BR5-ETHER-SAT-CO`) do carry a truth
-group but state a qualifier the group cannot express, saturated versus aromatic.
-That is recorded in their `condition_notes` and in `groups_missing.md` under
-"Qualifiers handled elsewhere".
+## 6. Coverage against the intended minimum
 
-## 5. Transcription doubts to resolve
+Covered: methyl and methylene C-H stretch and bends; aromatic C-H stretch,
+ring stretches and out-of-plane bends; benzene substitution patterns including
+the 690 band; alkene C-H, C=C and out-of-plane wags by substitution; alkyne C-H
+and triple bond by substitution; O-H stretch and wag of alcohols and phenols;
+C-O of alcohols by degree and of ethers by type; ketone C=O and C-C-C;
+aldehyde C=O, C-H doublet and bend; carboxylic acid O-H, C=O, C-O and bends;
+ester Rule of 3 (saturated and aromatic); organic carbonates; amide I and II,
+N-H stretches, C-N and wags (primary and secondary); amine N-H stretches,
+scissors, C-N and wags (primary and secondary, saturated and aromatic); amine
+salts; nitrile; nitro.
 
-1. **`SMITH-BR5-*` table number is unknown.** The project lead cited The Big
-   Review V without a table number, so `table` is blank for all five C-O rows.
-2. **`SMITH-BR7-*` table assignment is unresolved.** The source was cited as
-   "Tables I and II" for both the saturated and the aromatic ester block. Which
-   block sits in which table is not known, so all six rows carry
-   `Tables I and II` rather than a guess.
-3. **`SMITH-BR7-*` page range is unknown.** The citation for The Big Review VII
-   carried no page numbers, so `page` is blank for those six rows.
-4. **The meta 690 window is inferred.** The monosubstituted entry states
-   "690 plus or minus 10"; the meta entry states only "with 690". The window for
-   `SMITH-BR4-BZ-META-690` was taken as 680 to 700 by analogy, which is an
-   inference and is flagged in that row's `condition_notes`. If the source gives
-   a different tolerance, this row must change.
-5. **Negative conditions are not yet a testable form.** The ortho and para rules
-   are stated partly as the *absence* of a band near 690. That is recorded in
-   `condition_notes` as prose. How an absence is scored against a spectrum, and
-   with what threshold, is an evaluation decision that is not made here.
-6. **Intensity and shape are `any` wherever the source did not state them.** No
-   value was supplied from the transcriber's own knowledge. This means `any`
-   carries two different meanings at the moment, "the source says any" and "the
-   source is silent", and the distinction is currently lost. Worth splitting
-   into two values before freezing.
-
-## 6. Coverage not yet met
-
-The intended minimum coverage for this session is far from reached, because five
-of the six sources could not be read. Covered so far:
-
-- methyl and methylene C-H stretch
-- benzene substitution patterns, mono, ortho, meta and para, including the 690 band
-- ester C=O, C-C-O and O-C-C, saturated and aromatic
-- alcohol C-O by substitution degree, and saturated ether C-O
-
-Not covered, and needing the sources in `docs/refs/PENDING.md`:
-
-- aromatic C-H stretch
-- aromatic C=C ring stretch
-- alkene C=C stretch and out-of-plane deformations
-- alkyne C-H stretch and carbon-carbon triple bond stretch
-- O-H stretch of alcohols and phenols
-- ether C-O other than the saturated case
-- ketone C=O
-- aldehyde C=O and the C-H doublet near 2720
-- carboxylic acid broad O-H and C=O
-- amide I, amide II and amide N-H
-- amine N-H and the number of N-H bands by substitution
-- nitrile carbon-nitrogen triple bond stretch
-- nitro symmetric and asymmetric stretch
-- alkyl halide C-X
-
-Most of these sit in The Big Review VI (carbonyls), VIII (nitrogen) and in
-Coates, which is the broadest of the six and the only one giving a full
-correlation table in one place.
+Not covered by any Smith source read so far: alkyl halide C-X ranges (Smith's
+halogen article, Spectroscopy 2023, 38(9), 12-15 and 42, gives example
+positions and the overlap statement but its Table I could not be read from the
+text; read the table image before adding rows), anhydrides, acid halides,
+isocyanates, sulfur groups, imines. Coates is the source expected to cover
+these in one place.
