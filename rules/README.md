@@ -72,3 +72,23 @@ Socrates), and frozen before any evaluation is run.
 | `table`             | Table number within the edition.                                |
 | `page`              | Page number.                                                    |
 | `frozen`            | `yes` once the row is locked and must not be edited again.      |
+
+## `rules_draft.csv`
+
+The working draft of the correlation table, same columns as
+`rules_template.csv` plus a `source_quote` column holding the rule as it appears
+in the source. One row per rule **and per source**: when two authors give
+different windows for the same group they stay as two rows, so the disagreement
+survives into the analysis instead of being averaged away.
+
+Every row carries `frozen = no`. Rows move into `rules_template.csv` and are
+marked frozen only after being checked against the published article.
+`docs/rules_draft_notes.md` records which sources were obtained, the open
+transcription doubts and the coverage still missing.
+
+## `groups_missing.md`
+
+Groups a drafted rule needs as ground truth but that
+`functional_groups_smarts.csv` does not define. Those rules carry a blank
+`truth_smarts_group` and are listed there rather than being attached to a
+near-enough group.

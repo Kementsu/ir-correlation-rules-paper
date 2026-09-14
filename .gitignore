@@ -5,6 +5,11 @@ data/raw/
 # Reference checkouts of third-party code (cloned, not vendored).
 tools/
 
+# Reference articles (PDF, saved pages, table images) are not redistributed.
+# PENDING.md is our own record of what still has to be obtained, so it is kept.
+docs/refs/*
+!docs/refs/PENDING.md
+
 # Python
 .venv/
 __pycache__/
