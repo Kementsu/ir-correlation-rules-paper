@@ -1,5 +1,8 @@
+# Analysis (scripts/inventory.py .. evaluate_rules.py)
 numpy>=2.0
 pandas>=2.2
 rdkit>=2024.3
 jcamp>=1.3
 scipy>=1.12
+# Manuscript figures and tables (scripts/figures.py, scripts/tables.py)
+matplotlib>=3.9

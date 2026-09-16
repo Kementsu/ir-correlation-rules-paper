@@ -103,5 +103,5 @@ was run once more as a final pipeline check.
 
 1. Commit and tag `rules-frozen-v1`.
 2. Run `python scripts/evaluate_rules.py --split confirm` once.
-3. NIST condensed-phase replication with the ir_db download pipeline (all
+3. NIST condensed-phase replication with `scripts/nist_download.py` (all
    Index values, full JCAMP with metadata).

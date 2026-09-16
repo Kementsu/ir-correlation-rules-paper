@@ -57,7 +57,7 @@ DEV_FRACTION = 0.20
 SPLIT_SEED = 20260914
 
 
-def read_xy(path: str) -> tuple[np.ndarray, np.ndarray, str, str]:
+def read_xy(path: str) -> tuple[np.ndarray, np.ndarray, str, str, str]:
     import jcamp
 
     with contextlib.redirect_stdout(io.StringIO()):
@@ -73,8 +73,9 @@ def read_xy(path: str) -> tuple[np.ndarray, np.ndarray, str, str]:
     x = np.asarray(rec["x"], dtype=float)
     y = np.asarray(rec["y"], dtype=float)
     yunits = str(rec.get("yunits", "")).strip().upper()
+    xunits = str(rec.get("xunits", "")).strip().upper()
     sampling = str(rec.get("sampling procedure", "")).strip()
-    return x, y, yunits, sampling
+    return x, y, yunits, sampling, xunits
 
 
 def to_absorbance(y: np.ndarray, yunits: str) -> np.ndarray:
@@ -105,9 +106,12 @@ def als_baseline(y: np.ndarray, lam: float = ALS_LAM, p: float = ALS_P,
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--dataset", choices=["chemotion", "nist"], default="chemotion",
+                    help="chemotion: inventory.csv, dev/confirm split; nist: inventory_nist.csv, all 'confirm'")
     args = ap.parse_args()
+    suf = "" if args.dataset == "chemotion" else f"_{args.dataset}"
 
-    inv = pd.read_csv(PROCESSED / "inventory.csv", low_memory=False)
+    inv = pd.read_csv(PROCESSED / f"inventory{suf}.csv", low_memory=False)
     keep = inv[(inv.is_primary_export == True) & (inv.qc_pass == True)].copy()  # noqa: E712
     if args.limit:
         keep = keep.head(args.limit)
@@ -124,8 +128,10 @@ def main() -> int:
 
     for i, row in keep.iterrows():
         path = str(ROOT / row.file_path)
-        x, y, yunits, samp = read_xy(path)
+        x, y, yunits, samp, xunits = read_xy(path)
         sampling.append(samp)
+        if xunits.startswith("MICROMETER"):
+            x = 1e4 / x
         order = np.argsort(x)
         x, y = x[order], y[order]
         a = to_absorbance(y, yunits)
@@ -149,16 +155,20 @@ def main() -> int:
     n_dev = int(round(DEV_FRACTION * len(keys)))
     dev_keys = set(keys[:n_dev])
     split = np.where(keep.inchikey.fillna(keep.file_id).isin(dev_keys), "dev", "confirm")
+    if args.dataset != "chemotion":
+        split = np.full(len(keep), "confirm")  # replication set: no development split, rules already frozen
 
-    np.savez_compressed(PROCESSED / "spectra.npz", grid=grid, absorbance=corr,
+    np.savez_compressed(PROCESSED / f"spectra{suf}.npz", grid=grid, absorbance=corr,
                         raw_abs=raw, baseline=base, ids=keep.file_id.values)
     meta = keep[["file_id", "analysis_id", "sample_id", "inchikey", "smiles_canonical",
                  "instrument", "x_min", "x_max", "n_points", "resolution",
                  "is_multifragment", "has_unusual_elements"]].copy()
     meta["sampling_procedure"] = sampling
     meta["split"] = split
-    meta.to_csv(PROCESSED / "spectra_meta.csv", index=False)
-    print(f"[preprocess] wrote spectra.npz ({corr.shape}) and spectra_meta.csv")
+    meta["x_min_cm"] = [float(np.nanmin(grid[~np.isnan(corr[i])])) for i in range(len(keep))]
+    meta["x_max_cm"] = [float(np.nanmax(grid[~np.isnan(corr[i])])) for i in range(len(keep))]
+    meta.to_csv(PROCESSED / f"spectra_meta{suf}.csv", index=False)
+    print(f"[preprocess] wrote spectra{suf}.npz ({corr.shape}) and spectra_meta.csv")
     print(f"[preprocess] split: dev {int((split == 'dev').sum())}, confirm {int((split == 'confirm').sum())}")
     print("[preprocess] sampling procedure values:")
     print(pd.Series(sampling).replace("", "(missing)").value_counts().head(15).to_string())

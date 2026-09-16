@@ -108,12 +108,15 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", choices=["dev", "confirm", "all"], default="dev")
     ap.add_argument("--rules", default=str(RULES / "rules_frozen.csv"))
+    ap.add_argument("--dataset", choices=["chemotion", "nist"], default="chemotion")
     args = ap.parse_args()
+    suf = "" if args.dataset == "chemotion" else f"_{args.dataset}"
+    tag = f"{args.dataset}_{args.split}" if args.dataset != "chemotion" else args.split
 
     rules = pd.read_csv(args.rules)
-    inv = pd.read_csv(PROCESSED / "inventory.csv", low_memory=False)
-    meta = pd.read_csv(PROCESSED / "spectra_meta.csv")
-    bands_all = pd.read_csv(PROCESSED / "bands.csv")
+    inv = pd.read_csv(PROCESSED / f"inventory{suf}.csv", low_memory=False)
+    meta = pd.read_csv(PROCESSED / f"spectra_meta{suf}.csv")
+    bands_all = pd.read_csv(PROCESSED / f"bands{suf}.csv")
     groups = pd.read_csv(RULES / "functional_groups_smarts.csv")
     fg_cols = [f"fg_{g}" for g in groups.group]
     rng = np.random.default_rng(BOOT_SEED)
@@ -133,16 +136,27 @@ def main() -> int:
         sub = evaluable[evaluable.stratum == stratum]
         if not len(ids) or not len(sub):
             continue
-        truth = inv.loc[list(ids), fg_cols].astype(bool)
-        scaf = np.array([scaffold_of(s) for s in inv.loc[truth.index, "smiles_canonical"].fillna("")])
+        truth_all = inv.loc[list(ids), fg_cols].astype(bool)
+        rng_meta = meta.set_index("file_id").loc[truth_all.index]
+        xlo_all = rng_meta["x_min_cm"].values if "x_min_cm" in rng_meta else np.full(len(truth_all), 0.0)
+        xhi_all = rng_meta["x_max_cm"].values if "x_max_cm" in rng_meta else np.full(len(truth_all), 1e5)
+        scaf_all = np.array([scaffold_of(s) for s in inv.loc[truth_all.index, "smiles_canonical"].fillna("")])
         bands = bands_all[bands_all.file_id.isin(ids)]
-        n = len(truth)
-        print(f"[evaluate] split={args.split} stratum={stratum}: {n} spectra, {len(bands)} candidate bands, "
+        print(f"[evaluate] split={args.split} stratum={stratum}: {len(truth_all)} spectra, {len(bands)} candidate bands, "
               f"{len(sub)} rules")
         for _, r in sub.iterrows():
             col = f"fg_{r.truth_smarts_group}"
-            if col not in truth:
+            if col not in truth_all:
                 print(f"  ! no truth column for {r.rule_id} ({col})"); continue
+            # only spectra whose measured range covers every window of the rule
+            lo = min(float(r.wn_min), float(r.get("requires_wn_min")) if pd.notna(r.get("requires_wn_min")) else 1e9,
+                     float(r.get("forbids_wn_min")) if pd.notna(r.get("forbids_wn_min")) else 1e9)
+            hi = max(float(r.wn_max), float(r.get("requires_wn_max")) if pd.notna(r.get("requires_wn_max")) else 0,
+                     float(r.get("forbids_wn_max")) if pd.notna(r.get("forbids_wn_max")) else 0)
+            cover = (xlo_all <= lo) & (xhi_all >= hi)
+            truth = truth_all[cover]
+            scaf = scaf_all[cover]
+            n = len(truth)
             y = truth[col].values
             n_pos = int(y.sum())
             inwin = bands[(bands.position_cm >= float(r.wn_min)) & (bands.position_cm <= float(r.wn_max))]
@@ -205,14 +219,14 @@ def main() -> int:
                                     LR_neg=round(lrn, 2), LR_neg_lo=round(lrn_lo, 2), LR_neg_hi=round(lrn_hi, 2),
                                     underpowered=n_pos < MIN_POSITIVES, fp_enriched_groups=enriched))
     res = pd.DataFrame(out)
-    res.to_csv(PROCESSED / f"rule_metrics_{args.split}.csv", index=False)
+    res.to_csv(PROCESSED / f"rule_metrics_{tag}.csv", index=False)
 
     main_tab = res[(res.prominence == DEFAULT_PROMINENCE) & (res.definition == "+shape")].copy()
     pos_tab = res[(res.prominence == DEFAULT_PROMINENCE) & (res.definition == "position")].set_index(["rule_id", "stratum"])
     status = ("**Status: pipeline check on the development split. These numbers are for "
               "debugging the pipeline, not for the paper.**" if args.split == "dev"
               else "**Confirmatory run on the frozen rule table.**")
-    lines = [f"# Rule metrics, split = {args.split}", "", status, "",
+    lines = [f"# Rule metrics, dataset = {args.dataset}, split = {args.split}", "", status, "",
              f"Primary prominence threshold {DEFAULT_PROMINENCE}; full definition (position, intensity, shape). "
              f"`LR+ [CI]` is the analytic 95 percent interval; `boot` is the scaffold-cluster bootstrap interval "
              f"({BOOT_N} resamples); `LR+ pos` is the same rule scored by position only. "
@@ -221,7 +235,7 @@ def main() -> int:
         t = main_tab[main_tab.stratum == stratum]
         if not len(t):
             continue
-        lines += [f"## Stratum: {stratum} (n = {int(t.n.iloc[0])})", "",
+        lines += [f"## Stratum: {stratum} (n up to {int(t.n.max())}; each rule is scored on the spectra whose measured range covers its windows)", "",
                   "| rule | tier | truth group | window | n+ | sens | spec | LR+ [CI] | LR+ boot | LR- [CI] | LR+ pos | FP enriched in |",
                   "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
         for _, r in t.sort_values(["truth_group", "wn_min"]).iterrows():
@@ -241,8 +255,8 @@ def main() -> int:
         lines.append(f"| {rid} | " + " | ".join(f"{row[t]:.1f}" for t in PROMINENCE_SWEEP) + " |")
     lines += ["", f"## Not evaluable ({len(skipped)} rules)", ""]
     lines += [f"- {r.rule_id}: {r.group}. {str(r.condition_notes)[:160]}" for _, r in skipped.iterrows()]
-    (DOCS / f"rule_metrics_{args.split}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"[evaluate] {len(evaluable)} rules scored, {len(skipped)} not evaluable; wrote docs/rule_metrics_{args.split}.md")
+    (DOCS / f"rule_metrics_{tag}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"[evaluate] {len(evaluable)} rules scored, {len(skipped)} not evaluable; wrote docs/rule_metrics_{tag}.md")
     return 0
 
 

@@ -16,10 +16,10 @@ ether,[OD2]([#6;!$(C=O)])([#6;!$(C=O)]),"Punjabi et al. 2025, adapted from Fine 
 acyl_halides,"[CX3](=[OX1])[F,Cl,Br,I]","Punjabi et al. 2025, adapted from Fine et al. 2020"
 amides,[NX3][CX3](=[OX1])[#6],"Punjabi et al. 2025, adapted from Fine et al. 2020"
 nitro,"[$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8]","Punjabi et al. 2025, adapted from Fine et al. 2020"
-aromatic_mono,[cH;R1]1[cH;R1][cH;R1][cH;R1][cH;R1][c;R1]1[!#1],Mol Insight
-aromatic_ortho,[cH;R1]1[cH;R1][cH;R1][cH;R1][c;R1]([!#1])[c;R1]1[!#1],Mol Insight
-aromatic_meta,[cH;R1]1[cH;R1][cH;R1][c;R1]([!#1])[cH;R1][c;R1]1[!#1],Mol Insight
-aromatic_para,[cH;R1]1[cH;R1][c;R1]([!#1])[cH;R1][cH;R1][c;R1]1[!#1],Mol Insight
+aromatic_mono,[cH;R1]1[cH;R1][cH;R1][cH;R1][cH;R1][c;R1]1[!#1],this work
+aromatic_ortho,[cH;R1]1[cH;R1][cH;R1][cH;R1][c;R1]([!#1])[c;R1]1[!#1],this work
+aromatic_meta,[cH;R1]1[cH;R1][cH;R1][c;R1]([!#1])[cH;R1][c;R1]1[!#1],this work
+aromatic_para,[cH;R1]1[cH;R1][c;R1]([!#1])[cH;R1][cH;R1][c;R1]1[!#1],this work
 methylene,[CH2X4],this work (adopted 2026-09-14; see docs/decisions_freeze.md)
 methylene_chain_4,[CH2X4][CH2X4][CH2X4][CH2X4],this work (adopted 2026-09-14; see docs/decisions_freeze.md)
 alcohol_primary,[CH2X4][OX2H],this work (adopted 2026-09-14; see docs/decisions_freeze.md)

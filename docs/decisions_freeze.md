@@ -1,6 +1,6 @@
 # Decisions taken to freeze the rule table (2026-09-14)
 
-Taken on scientific and technical criteria, delegated by the project lead.
+Taken on scientific and technical criteria before the confirmatory run.
 Each decision names the alternative that was rejected and why. Anything a
 reviewer could call a degree of freedom is listed here so that it is fixed
 before the confirmatory run.

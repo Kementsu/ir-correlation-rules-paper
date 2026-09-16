@@ -80,7 +80,7 @@ bond. No SMARTS was invented for any of them.
    not as diagnostics for a single group. Decide whether they enter the
    evaluation as rules, or only as context.
 7. Amine salt rules are the source of the "salt mimics alkyne or nitrile"
-   trap observed during ARGI development (`SMITH-SALT19-COMB`, 2000-2800).
+   trap that automated interpretation runs into (`SMITH-SALT19-COMB`, 2000-2800).
    They only make sense on the salt stratum of the dataset.
 
 ## 6. Coverage against the intended minimum

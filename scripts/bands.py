@@ -21,8 +21,7 @@ Definitions (these are the operational choices the paper has to state):
     These cut points are also swept by the evaluation script.
   * fwhm_cm is the full width at half prominence (scipy peak_widths at
     rel_height 0.5), in cm-1. shape_class: sharp < 30, broad 30 to 100,
-    very_broad > 100 (same cut points as the Mol Insight ir_db config, kept so
-    the two analyses are comparable).
+    very_broad > 100.
   * Bands whose apex lies outside 650 to 3800 cm-1 are dropped: below 650
     many Chemotion spectra end and ATR diamond absorbs; above 3800 there is
     nothing diagnostic and the noise grows.
@@ -62,7 +61,12 @@ def classify_shape(w: float) -> str:
 
 
 def main() -> int:
-    z = np.load(PROCESSED / "spectra.npz", allow_pickle=True)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dataset", choices=["chemotion", "nist"], default="chemotion")
+    args = ap.parse_args()
+    suf = "" if args.dataset == "chemotion" else f"_{args.dataset}"
+    z = np.load(PROCESSED / f"spectra{suf}.npz", allow_pickle=True)
     grid, spectra, ids = z["grid"], z["absorbance"], z["ids"]
     step = float(grid[1] - grid[0])
     rows = []
@@ -89,7 +93,7 @@ def main() -> int:
                 intensity_class=classify_intensity(h), shape_class=classify_shape(w),
             ))
     bands = pd.DataFrame(rows)
-    bands.to_csv(PROCESSED / "bands.csv", index=False)
+    bands.to_csv(PROCESSED / f"bands{suf}.csv", index=False)
     per = bands.groupby("file_id").size()
     print(f"[bands] {len(bands)} candidate bands in {per.size} spectra; "
           f"median {per.median():.0f} per spectrum at prominence >= {PROMINENCE_FLOOR}")

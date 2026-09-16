@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this rule set, code or result tables, please cite the article below (preprint or journal version when available)."
+title: "Classical infrared correlation rules as diagnostic tests: likelihood ratios from 6,663 experimental spectra"
+authors:
+  - family-names: Ibarguen Calvo
+    given-names: Kementsu
+    affiliation: "Mol Insight S.L., Bilbao, Spain"
+    email: kementsuibarguen@gmail.com
+version: rules-frozen-v1
+date-released: 2026-09-14
+license: MIT
+repository-code: "https://github.com/<user>/ir-correlation-rules-paper"
+keywords:
+  - infrared spectroscopy
+  - correlation tables
+  - group frequencies
+  - likelihood ratio
+  - diagnostic accuracy
