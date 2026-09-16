@@ -1,0 +1,67 @@
+% Manuscript: Classical infrared correlation rules as diagnostic tests
+% Build: latexmk -pdf main.tex   (or upload the paper/ folder to Overleaf)
+% Journal templates (Applied Spectroscopy, SAGE) are applied at submission;
+% this file uses the plain article class so that the text can be moved.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{microtype}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{lineno}
+\usepackage{setspace}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\graphicspath{{figures/}}
+\linenumbers
+\onehalfspacing
+
+% units and symbols used throughout
+\newcommand{\wn}{cm$^{-1}$}
+\newcommand{\LRp}{LR$^{+}$}
+\newcommand{\LRn}{LR$^{-}$}
+% editorial notes to ourselves; remove before submission
+\newcommand{\todo}[1]{\textcolor{red!70!black}{[#1]}}
+
+\title{Classical infrared correlation rules as diagnostic tests:\\
+likelihood ratios from 6,663 experimental spectra}
+
+\author{Kementsu Ibarguen Calvo\\
+\small Mol Insight S.L., Bilbao, Spain\\
+\small \texttt{kementsuibarguen@gmail.com}}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/methods}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusions}
+\input{sections/declarations}
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\clearpage
+\appendix
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+\section{Quantified rule table}
+\label{app:table}
+\small
+\input{tables/table_rules}
+
+\end{document}

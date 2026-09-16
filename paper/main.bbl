@@ -1,0 +1,170 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bellamy(1975)]{bellamy1975infrared}
+L.~J. Bellamy.
+\newblock \emph{The Infra-red Spectra of Complex Molecules}.
+\newblock Chapman and Hall, London, 3 edition, 1975.
+
+\bibitem[Colthup et~al.(1990)Colthup, Daly, and
+  Wiberley]{colthup1990introduction}
+Norman~B. Colthup, Lawrence~H. Daly, and Stephen~E. Wiberley.
+\newblock \emph{Introduction to Infrared and Raman Spectroscopy}.
+\newblock Academic Press, San Diego, 3 edition, 1990.
+
+\bibitem[Smith(2025{\natexlab{a}})]{smith2025bigreview4}
+Brian~C. Smith.
+\newblock The big review {IV}: Hydrocarbons.
+\newblock \emph{Spectroscopy}, 40\penalty0 (1), 2025{\natexlab{a}}.
+\newblock \doi{10.56530/spectroscopy.vt7783b7}.
+
+\bibitem[Smith(2026)]{smith2026bigreview8}
+Brian~C. Smith.
+\newblock The big review {VIII}: Organic nitrogen compounds.
+\newblock \emph{Spectroscopy}, 41\penalty0 (1), 2026.
+\newblock \doi{10.56530/spectroscopy.it4477g2}.
+
+\bibitem[Woodruff and Smith(1980)]{woodruff1980pairs}
+Hugh~B. Woodruff and Graham~M. Smith.
+\newblock Computer program for the analysis of infrared spectra.
+\newblock \emph{Analytical Chemistry}, 52\penalty0 (14):\penalty0 2321--2327,
+  1980.
+\newblock \doi{10.1021/ac50064a019}.
+
+\bibitem[Woodruff and Smith(1981)]{woodruff1981rules}
+Hugh~B. Woodruff and Graham~M. Smith.
+\newblock Generating rules for {PAIRS}, a computerized infrared spectral
+  interpreter.
+\newblock \emph{Analytica Chimica Acta}, 133:\penalty0 545--553, 1981.
+\newblock \doi{10.1016/S0003-2670(01)95420-0}.
+
+\bibitem[Andreev and Argirov(1996)]{andreev1996expirs}
+G.~N. Andreev and O.~K. Argirov.
+\newblock {EXPIRS}, an expert system for generation of alternative sets of
+  substructures, derived by infrared spectra interpretation.
+\newblock \emph{Analytica Chimica Acta}, 321:\penalty0 105--111, 1996.
+\newblock \doi{10.1016/0003-2670(95)00551-X}.
+
+\bibitem[Fine et~al.(2020)Fine, Rajasekar, Jethava, and
+  Chopra]{fine2020spectral}
+Jonathan~A. Fine, Anand~A. Rajasekar, Krupal~P. Jethava, and Gaurav Chopra.
+\newblock Spectral deep learning for prediction and prospective validation of
+  functional groups.
+\newblock \emph{Chemical Science}, 11\penalty0 (18):\penalty0 4618--4630, 2020.
+\newblock \doi{10.1039/C9SC06240H}.
+
+\bibitem[Punjabi et~al.(2025)Punjabi, Huang, Holzhauer, Tremouilhac,
+  Friederich, Jung, and Br{\"a}se]{punjabi2025chemotion}
+Dev Punjabi, Yu-Chieh Huang, Laura Holzhauer, Pierre Tremouilhac, Pascal
+  Friederich, Nicole Jung, and Stefan Br{\"a}se.
+\newblock Infrared spectrum analysis of organic molecules with neural networks
+  using standard reference data sets in combination with real-world data.
+\newblock \emph{Journal of Cheminformatics}, 17:\penalty0 24, 2025.
+\newblock \doi{10.1186/s13321-025-00960-2}.
+
+\bibitem[{NIST}(2026)]{nist_webbook}
+{NIST}.
+\newblock {NIST} chemistry {WebBook}, {NIST} standard reference database number
+  69.
+\newblock National Institute of Standards and Technology, Gaithersburg MD,
+  2026.
+\newblock retrieved September 2026.
+
+\bibitem[Deeks and Altman(2004)]{deeks2004likelihood}
+Jonathan~J. Deeks and Douglas~G. Altman.
+\newblock Diagnostic tests 4: likelihood ratios.
+\newblock \emph{BMJ}, 329:\penalty0 168--169, 2004.
+\newblock \doi{10.1136/bmj.329.7458.168}.
+
+\bibitem[Smith(2025{\natexlab{b}})]{smith2025bigreview5}
+Brian~C. Smith.
+\newblock The big review {V}: The {C--O} bond.
+\newblock \emph{Spectroscopy}, 40\penalty0 (3), 2025{\natexlab{b}}.
+\newblock \doi{10.56530/spectroscopy.mq4273p5}.
+
+\bibitem[Smith(2025{\natexlab{c}})]{smith2025bigreview6}
+Brian~C. Smith.
+\newblock The big review {VI}: Carbonyl compounds.
+\newblock \emph{Spectroscopy}, 40\penalty0 (4), 2025{\natexlab{c}}.
+\newblock \doi{10.56530/spectroscopy.zd9677w3}.
+
+\bibitem[Smith(2025{\natexlab{d}})]{smith2025bigreview7}
+Brian~C. Smith.
+\newblock The big review {VII}: More carbonyl compounds.
+\newblock \emph{Spectroscopy}, 40\penalty0 (8), 2025{\natexlab{d}}.
+\newblock \doi{10.56530/spectroscopy.dg4483d4}.
+
+\bibitem[Smith(2016{\natexlab{a}})]{smith2016benzene}
+Brian~C. Smith.
+\newblock Group wavenumbers and an introduction to the spectroscopy of benzene
+  rings.
+\newblock \emph{Spectroscopy}, 31\penalty0 (3), 2016{\natexlab{a}}.
+
+\bibitem[Smith(2016{\natexlab{b}})]{smith2016alkenes}
+Brian~C. Smith.
+\newblock The infrared spectroscopy of alkenes.
+\newblock \emph{Spectroscopy}, 31\penalty0 (11), 2016{\natexlab{b}}.
+
+\bibitem[Smith(2017{\natexlab{a}})]{smith2017alkynes}
+Brian~C. Smith.
+\newblock An {IR} spectral interpretation potpourri: Carbohydrates and alkynes.
+\newblock \emph{Spectroscopy}, 32\penalty0 (7), 2017{\natexlab{a}}.
+
+\bibitem[Smith(2017{\natexlab{b}})]{smith2017aldehydes}
+Brian~C. Smith.
+\newblock The {C=O} bond, part {II}: Aldehydes.
+\newblock \emph{Spectroscopy}, 32\penalty0 (11), 2017{\natexlab{b}}.
+
+\bibitem[Smith(2019{\natexlab{a}})]{smith2019nitriles}
+Brian~C. Smith.
+\newblock Organic nitrogen compounds {IV}: Nitriles.
+\newblock \emph{Spectroscopy}, 34\penalty0 (7), 2019{\natexlab{a}}.
+
+\bibitem[Smith(2020)]{smith2020nitro}
+Brian~C. Smith.
+\newblock Organic nitrogen compounds {X}: Nitro groups, an explosive
+  proposition.
+\newblock \emph{Spectroscopy}, 35\penalty0 (9), 2020.
+
+\bibitem[Smith(2019{\natexlab{b}})]{smith2019aminesalts}
+Brian~C. Smith.
+\newblock Organic nitrogen compounds {V}: Amine salts.
+\newblock \emph{Spectroscopy}, 34\penalty0 (9), 2019{\natexlab{b}}.
+
+\bibitem[{RDKit contributors}(2026)]{rdkit}
+{RDKit contributors}.
+\newblock {RDKit}: Open-source cheminformatics.
+\newblock \url{https://www.rdkit.org}, 2026.
+
+\bibitem[Eilers and Boelens(2005)]{eilers2005baseline}
+Paul H.~C. Eilers and Hans F.~M. Boelens.
+\newblock Baseline correction with asymmetric least squares smoothing.
+\newblock Technical report, Leiden University Medical Centre, 2005.
+
+\bibitem[Simel et~al.(1991)Simel, Samsa, and Matchar]{simel1991likelihood}
+David~L. Simel, Gregory~P. Samsa, and David~B. Matchar.
+\newblock Likelihood ratios with confidence: sample size estimation for
+  diagnostic test studies.
+\newblock \emph{Journal of Clinical Epidemiology}, 44\penalty0 (8):\penalty0
+  763--770, 1991.
+\newblock \doi{10.1016/0895-4356(91)90128-V}.
+
+\bibitem[Bemis and Murcko(1996)]{bemis1996murcko}
+Guy~W. Bemis and Mark~A. Murcko.
+\newblock The properties of known drugs. 1. molecular frameworks.
+\newblock \emph{Journal of Medicinal Chemistry}, 39\penalty0 (15):\penalty0
+  2887--2893, 1996.
+\newblock \doi{10.1021/jm9602928}.
+
+\bibitem[Virtanen et~al.(2020)]{virtanen2020scipy}
+Pauli Virtanen et~al.
+\newblock {SciPy} 1.0: fundamental algorithms for scientific computing in
+  {Python}.
+\newblock \emph{Nature Methods}, 17:\penalty0 261--272, 2020.
+\newblock \doi{10.1038/s41592-019-0686-2}.
+
+\end{thebibliography}
