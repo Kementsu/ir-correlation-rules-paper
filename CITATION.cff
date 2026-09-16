@@ -9,7 +9,7 @@ authors:
 version: rules-frozen-v1
 date-released: 2026-09-14
 license: MIT
-repository-code: "https://github.com/<user>/ir-correlation-rules-paper"
+repository-code: "https://github.com/Kementsu/ir-correlation-rules-paper"
 keywords:
   - infrared spectroscopy
   - correlation tables
