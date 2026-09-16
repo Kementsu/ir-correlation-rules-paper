@@ -2,10 +2,10 @@
 tables.py: LaTeX tables for the manuscript, generated from the confirmatory
 result tables so that no number is typed by hand.
 
-Output: paper/tables/table_rules.tex   the quantified rule table (group tier,
+Output: results/tables/table_rules.tex   the quantified rule table (group tier,
                                        every rule powered in at least one
                                        collection), a longtable
-        paper/tables/table_summary.tex  counts of rules per LR+ band and per
+        results/tables/table_summary.tex  counts of rules per LR+ band and per
                                        spectral region, both collections
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = ROOT / "data" / "processed"
-OUT = ROOT / "paper" / "tables"
+OUT = ROOT / "results" / "tables"
 PRIMARY_PROM = 0.02
 FINGERPRINT_MAX = 1350.0
 DIAGNOSTIC_MIN = 1500.0

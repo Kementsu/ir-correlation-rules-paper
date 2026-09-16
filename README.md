@@ -41,7 +41,7 @@ of these rules actually carry diagnostic weight, and how much.
 | `scripts/`                       | Processing and analysis code.                                  |
 | `rules/`                         | SMARTS ground-truth definitions and the frozen rule table.     |
 | `docs/`                          | Generated reports, decisions and download instructions.        |
-| `paper/`                         | Manuscript (LaTeX), figures and generated tables.              |
+| `results/`                       | Figures, tables and supplement generated for the manuscript.   |
 | `tools/`                         | Reference checkouts of third-party code. Not tracked by git.   |
 
 ### Getting started
@@ -72,8 +72,9 @@ python scripts/preprocess.py --dataset nist
 python scripts/bands.py --dataset nist
 python scripts/evaluate_rules.py --dataset nist --split confirm
 
-python scripts/figures.py                  # manuscript figures
-python scripts/tables.py                   # manuscript tables
+python scripts/figures.py                  # results/figures
+python scripts/tables.py                   # results/tables
+python scripts/supplement.py               # results/supplement.tex
 ```
 
 `docs/pipeline_notes.md` records the fixed processing choices, the
@@ -85,14 +86,17 @@ development/confirmatory split and what the pipeline check showed.
 
 Every number in the manuscript comes from a file in `data/processed/` that a
 script in `scripts/` writes; nothing is typed by hand. The result tables are
-tracked in git, so the figures and tables of the paper can be rebuilt without
-the raw spectra:
+tracked in git, so the figures, tables and supplementary information of the
+paper can be rebuilt without the raw spectra:
 
 ```sh
-python scripts/figures.py     # paper/figures/*.pdf and figure_numbers.md
-python scripts/tables.py      # paper/tables/*.tex
-cd paper && latexmk -pdf main.tex
+python scripts/figures.py     # results/figures/*.pdf and figure_numbers.md
+python scripts/tables.py      # results/tables/*.tex
+python scripts/supplement.py  # results/supplement.tex
 ```
+
+The manuscript text itself is not part of this repository; the article is
+cited by its DOI (see `CITATION.cff`).
 
 To recompute the result tables themselves, obtain the spectra as described in
 `docs/DOWNLOAD.md` and run the pipeline above. On a laptop the Chemotion run

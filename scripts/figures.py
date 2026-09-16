@@ -7,12 +7,15 @@ Inputs:  data/processed/rule_metrics_confirm.csv        Chemotion, confirmatory
          data/processed/rule_metrics_comparison.csv     side by side
          data/processed/bands*.csv, inventory*.csv, spectra_meta*.csv
          rules/rules_frozen.csv
-Output:  paper/figures/fig1_lr_by_region.pdf  (and .png)
-         paper/figures/fig2_position_vs_full.pdf
-         paper/figures/fig3_nitrile.pdf
-         paper/figures/fig4_benzene.pdf
-         paper/figures/fig5_replication.pdf
-         paper/figures/figure_numbers.md  (the numbers quoted in captions)
+Output:  results/figures/fig1_lr_by_region.pdf  (and .png)
+         results/figures/fig2_position_vs_full.pdf
+         results/figures/fig3_nitrile.pdf
+         results/figures/fig4_benzene.pdf
+         results/figures/fig5_replication.pdf
+         results/figures/figure_numbers.md  (the numbers quoted in captions)
+
+The manuscript is kept in a separate folder; copy results/figures/*.pdf into
+its figures/ directory after regenerating.
 
 Conventions: primary threshold (prominence 0.02), full definition (+shape),
 main stratum, group tier, powered rules only (at least 10 positives) unless a
@@ -31,7 +34,7 @@ import pandas as pd  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = ROOT / "data" / "processed"
-FIG = ROOT / "paper" / "figures"
+FIG = ROOT / "results" / "figures"
 
 CHEM = "#2a78d6"   # Chemotion (ATR)
 NIST = "#eb6834"   # NIST (transmission)

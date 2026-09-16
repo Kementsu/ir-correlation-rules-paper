@@ -23,12 +23,10 @@ Thumbs.db
 data/processed/spectra.npz
 data/processed/spectra_nist.npz
 
-# LaTeX build products
-paper/main.pdf
-paper/*.aux
-paper/*.log
-paper/*.out
-paper/*.blg
-paper/*.fls
-paper/*.fdb_latexmk
-paper/*.synctex.gz
+# LaTeX build products of results/supplement.tex
+results/*.aux
+results/*.log
+results/*.out
+results/*.fls
+results/*.fdb_latexmk
+results/*.pdf
