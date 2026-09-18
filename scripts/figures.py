@@ -7,11 +7,12 @@ Inputs:  data/processed/rule_metrics_confirm.csv        Chemotion, confirmatory
          data/processed/rule_metrics_comparison.csv     side by side
          data/processed/bands*.csv, inventory*.csv, spectra_meta*.csv
          rules/rules_frozen.csv
-Output:  results/figures/fig1_lr_by_region.pdf  (and .png)
-         results/figures/fig2_position_vs_full.pdf
-         results/figures/fig3_nitrile.pdf
-         results/figures/fig4_benzene.pdf
-         results/figures/fig5_replication.pdf
+Output:  results/figures/fig1_workflow.pdf  (and .png)
+         results/figures/fig2_lr_by_region.pdf
+         results/figures/fig3_position_vs_full.pdf
+         results/figures/fig4_nitrile.pdf
+         results/figures/fig5_benzene.pdf
+         results/figures/fig6_replication.pdf
          results/figures/figure_numbers.md  (the numbers quoted in captions)
 
 The manuscript is kept in a separate folder; copy results/figures/*.pdf into
@@ -183,14 +184,14 @@ def fig1(chem: pd.DataFrame, nist: pd.DataFrame) -> None:
         for k, (_, r) in enumerate(top.iterrows()):
             ax.annotate(short_label(r.rule_id), (r.centre, min(r.LR_pos, 250)), xytext=(5, -2 if k else 2),
                         textcoords="offset points", fontsize=6.5, color=INK2, va="center")
-        note(f"Fig1 {name}: n_powered={len(p)}, fingerprint median LR+={fp:.2f} "
+        note(f"Fig2 {name}: n_powered={len(p)}, fingerprint median LR+={fp:.2f} "
              f"(n={int((p.wn_max <= FINGERPRINT_MAX).sum())}), >=1500 median LR+={hi_med:.2f} "
              f"(n={int((p.wn_min >= DIAGNOSTIC_MIN).sum())})")
     axes[1].set_xlabel("Centre of the published window (cm$^{-1}$)")
     axes[1].set_xlim(4000, 550)
     fig.align_ylabels(axes)
     fig.tight_layout(h_pad=1.0)
-    save(fig, "fig1_lr_by_region")
+    save(fig, "fig2_lr_by_region")
 
 
 # ----------------------------------------------------------------------------
@@ -214,7 +215,7 @@ def fig2(mchem: pd.DataFrame, mnist: pd.DataFrame) -> None:
                              spec_pos=q.specificity, spec_full=f.specificity,
                              clause=f"{f.rule_intensity}" + ("" if f.rule_shape == "any" else f", {f.rule_shape}")))
     d = pd.DataFrame(rows)
-    d.to_csv(PROCESSED / "fig2_position_vs_full.csv", index=False)
+    d.to_csv(PROCESSED / "fig3_position_vs_full.csv", index=False)
 
     fig, axes = plt.subplots(1, 2, figsize=(7.2, 6.2), sharey=False)
     for ax, (name, col) in zip(axes, [("Chemotion", CHEM), ("NIST", NIST)]):
@@ -247,12 +248,12 @@ def fig2(mchem: pd.DataFrame, mnist: pd.DataFrame) -> None:
                     va="center", transform=tr)
         gain = (s.lr_full > s.lr_pos * 1.2).sum()
         loss_sens = (s.sens_full < s.sens_pos * 0.5).sum()
-        note(f"Fig2 {name}: {len(s)} clause rules; LR+ up by >20% in {gain}; sensitivity halved or worse in {loss_sens}; "
+        note(f"Fig3 {name}: {len(s)} clause rules; LR+ up by >20% in {gain}; sensitivity halved or worse in {loss_sens}; "
              f"median sens position {s.sens_pos.median():.2f} full {s.sens_full.median():.2f}")
     h, l = axes[0].get_legend_handles_labels()
     fig.legend(h, l, loc="lower center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 0.0))
     fig.tight_layout(w_pad=7, rect=(0, 0.04, 0.97, 1))
-    save(fig, "fig2_position_vs_full")
+    save(fig, "fig3_position_vs_full")
 
 
 # ----------------------------------------------------------------------------
@@ -286,7 +287,7 @@ def fig3() -> None:
     dn = nitrile_bands("_nist")
     dc["dataset"], dn["dataset"] = "Chemotion", "NIST"
     d = pd.concat([dc, dn], ignore_index=True)
-    d.to_csv(PROCESSED / "fig3_nitrile_bands.csv", index=False)
+    d.to_csv(PROCESSED / "fig4_nitrile_bands.csv", index=False)
 
     fig, axes = plt.subplots(1, 2, figsize=(6.5, 2.9))
     # (a) height of the nitrile band relative to the strongest band, as a survival curve
@@ -324,7 +325,7 @@ def fig3() -> None:
         labels.append((yy, f"{name} {kind} (n = {len(s)})"))
         lo, hi = (2220, 2240) if kind == "aromatic" else (2240, 2260)
         inside = ((s.position >= lo) & (s.position <= hi)).mean() if len(s) else float("nan")
-        note(f"Fig3 {name} {kind}: n_detected={len(s)}, inside own window {inside:.2f}, "
+        note(f"Fig4 {name} {kind}: n_detected={len(s)}, inside own window {inside:.2f}, "
              f"apex median {s.position.median():.0f}, IQR {s.position.quantile(.25):.0f}-{s.position.quantile(.75):.0f}")
     ax.set_yticks([lv[0] for lv in labels])
     ax.set_yticklabels([lv[1] for lv in labels], fontsize=6.5)
@@ -338,11 +339,11 @@ def fig3() -> None:
         det = s.detected.mean()
         strong = (s.height >= 0.6).mean()
         med = s[s.detected].height.median()
-        note(f"Fig3 {name}: nitriles={len(s)}, detected at prominence>=0.02: {det:.2f}, "
+        note(f"Fig4 {name}: nitriles={len(s)}, detected at prominence>=0.02: {det:.2f}, "
              f"height median {med:.2f} (IQR {s[s.detected].height.quantile(.25):.2f}-{s[s.detected].height.quantile(.75):.2f}), "
              f"'strong' (>=0.6) share {strong:.2f}")
     fig.tight_layout(w_pad=2)
-    save(fig, "fig3_nitrile")
+    save(fig, "fig4_nitrile")
 
 
 # ----------------------------------------------------------------------------
@@ -390,10 +391,10 @@ def fig4(chem: pd.DataFrame, nist: pd.DataFrame) -> None:
     axes[0].tick_params(axis="y", length=0)
     axes[0].legend(frameon=False, loc="upper right", handletextpad=0.2)
     for rid in ids:
-        note(f"Fig4 {rid}: Chemotion LR+ {c.loc[rid, 'LR_pos']:.2f} (n+ {c.loc[rid, 'n_pos']}) LR- {c.loc[rid, 'LR_neg']:.2f}; "
+        note(f"Fig5 {rid}: Chemotion LR+ {c.loc[rid, 'LR_pos']:.2f} (n+ {c.loc[rid, 'n_pos']}) LR- {c.loc[rid, 'LR_neg']:.2f}; "
              f"NIST LR+ {n.loc[rid, 'LR_pos']:.2f} (n+ {n.loc[rid, 'n_pos']}) LR- {n.loc[rid, 'LR_neg']:.2f}")
     fig.tight_layout(w_pad=1.5)
-    save(fig, "fig4_benzene")
+    save(fig, "fig5_benzene")
 
 
 # ----------------------------------------------------------------------------
@@ -405,7 +406,7 @@ def fig5(comp: pd.DataFrame) -> None:
     rho = spearmanr(d.chem_LR_pos, d.nist_LR_pos).statistic
     ratio = d.nist_LR_pos / d.chem_LR_pos
     within2 = ((ratio >= 0.5) & (ratio <= 2)).mean()
-    note(f"Fig5: {len(d)} rules powered in both; Spearman rho {rho:.2f}; within factor 2: {within2:.2f} ({int(((ratio >= 0.5) & (ratio <= 2)).sum())})")
+    note(f"Fig6: {len(d)} rules powered in both; Spearman rho {rho:.2f}; within factor 2: {within2:.2f} ({int(((ratio >= 0.5) & (ratio <= 2)).sum())})")
 
     fig, ax = plt.subplots(figsize=(4.4, 4.4))
     lim = (0.4, 300)
@@ -442,7 +443,7 @@ def fig5(comp: pd.DataFrame) -> None:
     ax.legend(frameon=False, loc="upper left", bbox_to_anchor=(0.0, 0.84))
     ax.set_aspect("equal")
     fig.tight_layout()
-    save(fig, "fig5_replication")
+    save(fig, "fig6_replication")
 
 
 # ----------------------------------------------------------------------------
@@ -490,16 +491,93 @@ def benzene_690_shares() -> None:
         note(f"Benzene {name}: " + "; ".join(parts))
 
 
+# ----------------------------------------------------------------------------
+# Workflow figure: one spectrum through the pipeline
+# ----------------------------------------------------------------------------
+WORKFLOW_ID = "2cbd3450-a7e8-40f8-ab1e-bfbd587cda1f"   # 2,5-dimethylbenzene-1,4-dicarbonitrile, Chemotion
+
+
+def fig_workflow() -> None:
+    from matplotlib.patches import FancyBboxPatch
+    z = np.load(PROCESSED / "spectra.npz", allow_pickle=True)
+    ids = list(z["ids"]); i = ids.index(WORKFLOW_ID)
+    grid, raw, base, corr = z["grid"], z["raw_abs"][i], z["baseline"][i], z["absorbance"][i]
+    bands = pd.read_csv(PROCESSED / "bands.csv"); b = bands[(bands.file_id == WORKFLOW_ID) & (bands.prominence_rel >= PRIMARY_PROM)]
+    m = pd.read_csv(PROCESSED / "rule_metrics_confirm.csv")
+    r = m[(m.rule_id == "SMITH-NIT19-AR-CN") & (m.stratum == "main") & (m.prominence == PRIMARY_PROM)].set_index("definition")
+    ok = ~np.isnan(corr)
+
+    fig, axes = plt.subplots(2, 2, figsize=(6.8, 4.6))
+    axes = axes.ravel()
+    # (a) as recorded
+    ax = axes[0]
+    T = 10 ** (-raw[ok]) * 100
+    ax.plot(grid[ok], T, color=INK, lw=0.7)
+    ax.set_xlim(4000, 400); ax.set_ylim(0, 105)
+    ax.set_ylabel("Transmittance (%)")
+    ax.set_title("(a) As recorded (ATR, 4 cm$^{-1}$)", loc="left")
+    # (b) absorbance and baseline
+    ax = axes[1]
+    ax.plot(grid[ok], raw[ok], color=INK, lw=0.7, label="absorbance")
+    ax.plot(grid[ok], base[ok], color=NIST, lw=1.0, ls=(0, (3, 2)), label="ALS baseline")
+    ax.set_xlim(4000, 400); ax.set_ylabel("Absorbance")
+    ax.set_title("(b) Absorbance and baseline estimate", loc="left"); ax.legend(frameon=False, loc="upper left", fontsize=6.5)
+    # (c) corrected, normalised, bands
+    ax = axes[2]
+    ax.plot(grid[ok], corr[ok], color=INK, lw=0.7)
+    ax.vlines(b.position_cm, 1.03, 1.09, color=CHEM, lw=0.8)
+    ax.text(3980, 1.14, f"{len(b)} detected bands (prominence $\\geq$ 0.02)", fontsize=6, color=CHEM, va="bottom")
+    ax.axvspan(2220, 2240, color="#f7c9b5", lw=0, zorder=0)
+    ax.axhline(0.6, color=INK2, lw=0.5, ls=(0, (3, 2))); ax.axhline(0.2, color=INK2, lw=0.5, ls=(0, (1, 2)))
+    ax.text(3950, 0.62, "strong", fontsize=6, color=INK2, va="bottom"); ax.text(3950, 0.22, "medium", fontsize=6, color=INK2, va="bottom")
+    nit = b[(b.position_cm >= 2190) & (b.position_cm <= 2280)].sort_values("height_rel").iloc[-1]
+    ax.annotate(f"C\u2261N {nit.position_cm:.0f} cm$^{{-1}}$\nheight {nit.height_rel:.2f}", (nit.position_cm, nit.height_rel),
+                xytext=(3300, 0.80), fontsize=6.5, color=INK2, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.5))
+    ax.annotate("rule window\n2220 to 2240", (2230, 0.02), xytext=(2050, 0.88), fontsize=6.5, color=INK2,
+                arrowprops=dict(arrowstyle="-", color=INK2, lw=0.5))
+    ax.set_xlim(4000, 650); ax.set_ylim(0, 1.25)
+    ax.set_xlabel("Wavenumber (cm$^{-1}$)"); ax.set_ylabel("Relative absorbance")
+    ax.set_title("(c) Baseline corrected, normalised, bands detected", loc="left")
+    # (d) scoring
+    ax = axes[3]; ax.axis("off")
+    pos, full = r.loc["position"], r.loc["+shape"]
+    lines = [("Rule: aromatic nitrile, 2220 to 2240, intense", INK, 7),
+             ("This spectrum:", INK, 6.5),
+             ("  position  inside window  yes", INK2, 6.5),
+             ("  intensity  0.30 < 0.6  no", INK2, 6.5),
+             ("", INK, 4),
+             (f"All {int(pos.n)} spectra, {int(pos.n_pos)} nitriles:", INK, 6.5),
+             ("", INK, 2),
+             ("position only", INK, 6.5),
+             (f"  sens {pos.sensitivity:.2f}  spec {pos.specificity:.2f}", INK2, 6.5),
+             (f"  LR+ {pos.LR_pos:.0f}   LR\u2212 {pos.LR_neg:.2f}", INK2, 6.5),
+             ("", INK, 2),
+             ("with intensity clause", INK, 6.5),
+             (f"  sens {full.sensitivity:.2f}  spec {full.specificity:.2f}", INK2, 6.5),
+             (f"  LR+ {full.LR_pos:.0f}   LR\u2212 {full.LR_neg:.2f}", INK2, 6.5)]
+    y = 0.95
+    for txt, col, fs in lines:
+        ax.text(0.04, y, txt, fontsize=fs + 0.5, color=col, va="top", transform=ax.transAxes, family="sans-serif")
+        y -= 0.07 if fs > 4 else 0.025
+    ax.set_title("(d) Scoring the rule as a diagnostic test", loc="left")
+    note(f"Fig1 workflow: {WORKFLOW_ID}, bands at 0.02 = {len(b)}, CN apex {nit.position_cm}, height {nit.height_rel:.2f}; "
+         f"nitrile ar position sens {pos.sensitivity:.2f} spec {pos.specificity:.2f} LR+ {pos.LR_pos:.1f}; full sens {full.sensitivity:.2f} LR+ {full.LR_pos:.0f}")
+    axes[2].set_xlabel("Wavenumber (cm$^{-1}$)"); axes[0].set_xlabel("Wavenumber (cm$^{-1}$)"); axes[1].set_xlabel("Wavenumber (cm$^{-1}$)")
+    fig.tight_layout(w_pad=1.5, h_pad=1.5)
+    save(fig, "fig1_workflow")
+
+
 def main() -> int:
     mchem = pd.read_csv(PROCESSED / "rule_metrics_confirm.csv")
     mnist = pd.read_csv(PROCESSED / "rule_metrics_nist_confirm.csv")
     comp = pd.read_csv(PROCESSED / "rule_metrics_comparison.csv")
     chem, nist = primary(mchem), primary(mnist)
-    print("[figures] figure 1"); fig1(chem, nist)
-    print("[figures] figure 2"); fig2(mchem, mnist)
-    print("[figures] figure 3"); fig3()
-    print("[figures] figure 4"); fig4(chem, nist)
-    print("[figures] figure 5"); fig5(comp)
+    print("[figures] figure 1"); fig_workflow()
+    print("[figures] figure 2"); fig1(chem, nist)
+    print("[figures] figure 3"); fig2(mchem, mnist)
+    print("[figures] figure 4"); fig3()
+    print("[figures] figure 5"); fig4(chem, nist)
+    print("[figures] figure 6"); fig5(comp)
     print("[figures] crowding"); crowding_numbers()
     print("[figures] benzene 690"); benzene_690_shares()
     (FIG / "figure_numbers.md").write_text("# Numbers behind the figures\n\n" + "\n".join(f"- {s}" for s in NOTES) + "\n", encoding="utf-8")

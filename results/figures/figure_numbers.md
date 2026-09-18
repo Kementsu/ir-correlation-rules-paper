@@ -1,24 +1,25 @@
 # Numbers behind the figures
 
-- Fig1 Chemotion (ATR): n_powered=73, fingerprint median LR+=1.06 (n=38), >=1500 median LR+=2.80 (n=31)
-- Fig1 NIST WebBook (transmission): n_powered=85, fingerprint median LR+=1.21 (n=43), >=1500 median LR+=3.03 (n=37)
-- Fig2 Chemotion: 20 clause rules; LR+ up by >20% in 16; sensitivity halved or worse in 8; median sens position 0.78 full 0.44
-- Fig2 NIST: 29 clause rules; LR+ up by >20% in 23; sensitivity halved or worse in 8; median sens position 0.70 full 0.39
-- Fig3 Chemotion aromatic: n_detected=65, inside own window 0.82, apex median 2224, IQR 2220-2232
-- Fig3 Chemotion saturated: n_detected=3, inside own window 0.33, apex median 2218, IQR 2209-2233
-- Fig3 NIST aromatic: n_detected=32, inside own window 0.47, apex median 2236, IQR 2223-2246
-- Fig3 NIST saturated: n_detected=83, inside own window 0.45, apex median 2244, IQR 2224-2254
-- Fig3 Chemotion: nitriles=72, detected at prominence>=0.02: 0.94, height median 0.30 (IQR 0.08-0.50), 'strong' (>=0.6) share 0.10
-- Fig3 NIST: nitriles=127, detected at prominence>=0.02: 0.91, height median 0.18 (IQR 0.08-0.36), 'strong' (>=0.6) share 0.11
-- Fig4 SMITH-BR4-BZ-MONO-OOP: Chemotion LR+ 1.05 (n+ 344) LR- 0.38; NIST LR+ 1.24 (n+ 928) LR- 0.27
-- Fig4 SMITH-BR4-BZ-MONO-690: Chemotion LR+ 1.88 (n+ 344) LR- 0.17; NIST LR+ 3.13 (n+ 924) LR- 0.15
-- Fig4 SMITH-BR4-BZ-MONO-BOTH: Chemotion LR+ 1.96 (n+ 344) LR- 0.20; NIST LR+ 3.69 (n+ 924) LR- 0.21
-- Fig4 SMITH-BR4-BZ-ORTHO-OOP: Chemotion LR+ 0.82 (n+ 145) LR- 1.08; NIST LR+ 1.67 (n+ 258) LR- 0.71
-- Fig4 SMITH-BR4-BZ-META-OOP: Chemotion LR+ 1.08 (n+ 42) LR- 0.25; NIST LR+ 1.29 (n+ 141) LR- 0.14
-- Fig4 SMITH-BR4-BZ-META-690: Chemotion LR+ 1.29 (n+ 42) LR- 0.61; NIST LR+ 1.72 (n+ 141) LR- 0.54
-- Fig4 SMITH-BR4-BZ-META-BOTH: Chemotion LR+ 1.40 (n+ 42) LR- 0.55; NIST LR+ 2.03 (n+ 141) LR- 0.51
-- Fig4 SMITH-BR4-BZ-PARA-OOP: Chemotion LR+ 1.19 (n+ 415) LR- 0.89; NIST LR+ 1.11 (n+ 645) LR- 0.90
-- Fig5: 71 rules powered in both; Spearman rho 0.79; within factor 2: 0.87 (62)
+- Fig1 workflow: 2cbd3450-a7e8-40f8-ab1e-bfbd587cda1f, bands at 0.02 = 53, CN apex 2224.0, height 0.30; nitrile ar position sens 0.78 spec 0.92 LR+ 10.1; full sens 0.06 LR+ 189
+- Fig2 Chemotion (ATR): n_powered=73, fingerprint median LR+=1.06 (n=38), >=1500 median LR+=2.80 (n=31)
+- Fig2 NIST WebBook (transmission): n_powered=85, fingerprint median LR+=1.21 (n=43), >=1500 median LR+=3.03 (n=37)
+- Fig3 Chemotion: 20 clause rules; LR+ up by >20% in 16; sensitivity halved or worse in 8; median sens position 0.78 full 0.44
+- Fig3 NIST: 29 clause rules; LR+ up by >20% in 23; sensitivity halved or worse in 8; median sens position 0.70 full 0.39
+- Fig4 Chemotion aromatic: n_detected=65, inside own window 0.82, apex median 2224, IQR 2220-2232
+- Fig4 Chemotion saturated: n_detected=3, inside own window 0.33, apex median 2218, IQR 2209-2233
+- Fig4 NIST aromatic: n_detected=32, inside own window 0.47, apex median 2236, IQR 2223-2246
+- Fig4 NIST saturated: n_detected=83, inside own window 0.45, apex median 2244, IQR 2224-2254
+- Fig4 Chemotion: nitriles=72, detected at prominence>=0.02: 0.94, height median 0.30 (IQR 0.08-0.50), 'strong' (>=0.6) share 0.10
+- Fig4 NIST: nitriles=127, detected at prominence>=0.02: 0.91, height median 0.18 (IQR 0.08-0.36), 'strong' (>=0.6) share 0.11
+- Fig5 SMITH-BR4-BZ-MONO-OOP: Chemotion LR+ 1.05 (n+ 344) LR- 0.38; NIST LR+ 1.24 (n+ 928) LR- 0.27
+- Fig5 SMITH-BR4-BZ-MONO-690: Chemotion LR+ 1.88 (n+ 344) LR- 0.17; NIST LR+ 3.13 (n+ 924) LR- 0.15
+- Fig5 SMITH-BR4-BZ-MONO-BOTH: Chemotion LR+ 1.96 (n+ 344) LR- 0.20; NIST LR+ 3.69 (n+ 924) LR- 0.21
+- Fig5 SMITH-BR4-BZ-ORTHO-OOP: Chemotion LR+ 0.82 (n+ 145) LR- 1.08; NIST LR+ 1.67 (n+ 258) LR- 0.71
+- Fig5 SMITH-BR4-BZ-META-OOP: Chemotion LR+ 1.08 (n+ 42) LR- 0.25; NIST LR+ 1.29 (n+ 141) LR- 0.14
+- Fig5 SMITH-BR4-BZ-META-690: Chemotion LR+ 1.29 (n+ 42) LR- 0.61; NIST LR+ 1.72 (n+ 141) LR- 0.54
+- Fig5 SMITH-BR4-BZ-META-BOTH: Chemotion LR+ 1.40 (n+ 42) LR- 0.55; NIST LR+ 2.03 (n+ 141) LR- 0.51
+- Fig5 SMITH-BR4-BZ-PARA-OOP: Chemotion LR+ 1.19 (n+ 415) LR- 0.89; NIST LR+ 1.11 (n+ 645) LR- 0.90
+- Fig6: 71 rules powered in both; Spearman rho 0.79; within factor 2: 0.87 (62)
 - Crowding Chemotion: bands 700-1350 per spectrum median 16 (IQR 13-18); bands >= 1500 median 10; share of 50 cm-1 windows occupied, median 0.85
 - Crowding NIST: bands 700-1350 per spectrum median 12 (IQR 9-14); bands >= 1500 median 6; share of 50 cm-1 windows occupied, median 0.69
 - Benzene Chemotion: aromatic share 0.93; mono: with 690 band 0.91 vs others 0.48; ortho: with 690 band 0.74 vs others 0.56; para: with 690 band 0.56 vs others 0.59
